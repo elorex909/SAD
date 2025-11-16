@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-M">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Systems Analysis | Chapter Summaries</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Font (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind Config for Dark Mode & Font -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'slide-in-up': 'slideInUp 0.6s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            'from': { opacity: 0 },
+                            'to': { opacity: 1 },
+                        },
+                        slideInUp: {
+                            'from': { opacity: 0, transform: 'translateY(20px)' },
+                            'to': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                    },
+                },
+            },
+        };
+    </script>
+
+    <!-- Custom CSS -->
+    <style type="text/css">
+        /* --- Color Palette Variables --- */
+        :root {
+            /* Light Mode */
+            --bg-primary: #eeeeee;
+            --bg-secondary: #f9fafb;
+            --text-primary: #222831;
+            --text-secondary: #393e46;
+            --border-color: #d1d5db;
+            --accent-color: #00adb5;
+            --accent-hover: #008a90; /* Darker teal */
+            --content-box-bg: #ffffff;
+        }
+
+        .dark {
+            /* Dark Mode */
+            --bg-primary: #222831;
+            --bg-secondary: #393e46;
+            --text-primary: #eeeeee;
+            --text-secondary: #d1d5db;
+            --border-color: #4b5563; /* Slightly lighter than bg */
+            --accent-color: #00adb5;
+            --accent-hover: #00c5cf; /* Lighter teal */
+            --content-box-bg: #393e46;
+        }
+        /* --- End Palette --- */
+
+        /* Base Body Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Active Nav Link Styling */
+        .nav-link.active-link {
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+        
+        /* Content Box Styling (Main outer box) */
+        .content-box {
+            background-color: var(--content-box-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem; /* 12px */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        .dark .content-box {
+             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* --- NEW STYLES FOR SUMMARY LAYOUT --- */
+        
+        /* New: Card for list items (e.g., Key Features) */
+        .feature-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: 0.5rem; /* 8px */
+            transition: all 0.2s ease;
+            color: var(--text-secondary);
+        }
+        .dark .feature-card {
+            background-color: var(--bg-primary); /* #222831 */
+        }
+        .feature-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border-color: var(--accent-color);
+        }
+        .feature-card strong {
+             color: var(--text-primary);
+        }
+
+        /* New: Card for system types (Ch. 2) */
+        .system-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem; /* 12px */
+            padding: 1.5rem; /* 24px */
+            transition: all 0.2s ease-in-out;
+            height: 100%; /* For grid alignment */
+        }
+        .dark .system-card {
+             background-color: var(--bg-primary); /* #222831 */
+        }
+        .system-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.07);
+            border-color: var(--accent-color);
+        }
+        /* Override margins for headings inside cards */
+        .system-card h4, .system-card h3 {
+            margin-top: 0;
+            margin-bottom: 0.75rem; /* 12px */
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+        .system-card ul {
+            margin-left: 1rem;
+            margin-bottom: 0;
+        }
+        .system-card li {
+            font-size: 0.9rem;
+        }
+        /* --- END NEW STYLES --- */
+
+
+        /* Summary Content Typography (Base) */
+        .summary-content h3 {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 600; /* font-semibold */
+            color: var(--text-primary);
+            margin-top: 1.5rem; /* mt-6 */
+            margin-bottom: 0.75rem; /* mb-3 */
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem; /* pb-2 */
+        }
+        /* Make H3s that are NOT in a card bigger */
+        .content-box > .summary-content > h3 {
+             font-size: 1.5rem; /* text-2xl */
+             margin-bottom: 1.5rem; /* mb-6 */
+        }
+        
+        .summary-content h4 {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 600; /* font-semibold */
+            color: var(--text-primary);
+            margin-top: 1.25rem; /* mt-5 */
+            margin-bottom: 0.5rem; /* mb-2 */
+        }
+        .summary-content p, .summary-content li {
+            color: var(--text-secondary);
+            line-height: 1.625; /* leading-relaxed */
+            margin-bottom: 1rem; /* mb-4 */
+        }
+        .summary-content ul {
+            list-style-type: disc;
+            list-style-position: outside;
+            margin-left: 1.25rem; /* ml-5 */
+            margin-bottom: 1rem; /* mb-4 */
+        }
+         .summary-content li {
+            margin-bottom: 0.5rem; /* mb-2 */
+            padding-left: 0.5rem; /* pl-2 */
+         }
+        .summary-content strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        .summary-content code {
+            background-color: var(--bg-secondary);
+            color: var(--accent-color);
+            padding: 0.125rem 0.375rem; /* px-1.5 py-0.5 */
+            border-radius: 0.375rem; /* rounded-md */
+            font-size: 0.9em;
+        }
+        .summary-content blockquote {
+            border-left: 4px solid var(--accent-color);
+            padding-left: 1rem; /* pl-4 */
+            margin: 1.5rem 0; /* my-6 */
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+        .summary-content table {
+            width: 100%;
+            margin-bottom: 1rem; /* mb-4 */
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        .summary-content th,
+        .summary-content td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem; /* p-3 */
+            text-align: left;
+        }
+        .summary-content th {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        .summary-content tr:nth-child(even) {
+            background-color: var(--bg-secondary);
+        }
+        .dark .summary-content tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Form Input Styling */
+        .form-input {
+            display: block;
+            width: 100%;
+            border-radius: 0.5rem; /* rounded-lg */
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            padding: 0.75rem 1rem; /* px-4 py-3 */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .dark .form-input {
+            background-color: var(--bg-secondary); /* Darker input bg */
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px var(--accent-color);
+        }
+        
+        /* Page Animation Styling */
+        .page-content { }
+        .page-fade-in { animation: fadeIn 0.4s ease-out; }
+        .animated-item { opacity: 0; /* Start hidden */ }
+        
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Header & Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-50 h-[68px] border-b border-[var(--border-color)] bg-[var(--bg-primary)]/80 backdrop-blur-md transition-colors duration-300">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-full">
+            <!-- Logo/Title -->
+            <a href="#/home" class="nav-link text-xl font-bold text-[var(--text-primary)] transition-colors hover:text-[var(--accent-color)]">
+                Systems Analysis
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#/home" class="nav-link text-sm font-medium text-[var(--text-secondary)] transition-all duration-200 hover:text-[var(--accent-color)] hover:-translate-y-0.5">Home</a>
+                <a href="#/chapter-1" class="nav-link text-sm font-medium text-[var(--text-secondary)] transition-all duration-200 hover:text-[var(--accent-color)] hover:-translate-y-0.5">Chapter 1 Summary</a>
+                <a href="#/chapter-2" class="nav-link text-sm font-medium text-[var(--text-secondary)] transition-all duration-200 hover:text-[var(--accent-color)] hover:-translate-y-0.5">Chapter 2 Summary</a>
+                <a href="#/ask-question" class="nav-link text-sm font-medium text-[var(--text-secondary)] transition-all duration-200 hover:text-[var(--accent-color)] hover:-translate-y-0.5">Ask a Question</a>
+                
+                <!-- Theme Toggle Button -->
+                <button id="theme-toggle" type="button" aria-label="Toggle light/dark mode" class="p-2 rounded-full text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-primary)] transition-all">
+                    <!-- Sun Icon -->
+                    <svg id="theme-icon-sun" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M12 12a5 5 0 100-10 5 5 0 000 10z"></path>
+                    </svg>
+                    <!-- Moon Icon -->
+                    <svg id="theme-icon-moon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden flex items-center">
+                <button id="theme-toggle-mobile" type="button" aria-label="Toggle light/dark mode" class="p-2 rounded-full text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-primary)] transition-all">
+                     <svg id="theme-icon-sun-mobile" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M12 12a5 5 0 100-10 5 5 0 000 10z"></path></svg>
+                     <svg id="theme-icon-moon-mobile" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </button>
+                <button id="mobile-menu-button" type="button" aria-label="Open main menu" class="ml-2 p-2 rounded-md text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-primary)] transition-all">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden absolute top-[68px] left-0 right-0 w-full bg-[var(--bg-primary)] border-b border-[var(--border-color)] shadow-lg">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#/home" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-primary)]">Home</a>
+                <a href="#/chapter-1" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-primary)]">Chapter 1 Summary</a>
+                <a href="#/chapter-2" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-primary)]">Chapter 2 Summary</a>
+                <a href="#/ask-question" class="nav-link block px3 py-2 rounded-md text-base font-medium text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-primary)]">Ask a Question</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content: Container for all pages -->
+    <main class="pt-[68px]">
+
+        <!-- Home Page -->
+        <section id="page-home" class="page-content min-h-[calc(100vh-68px)] flex items-center justify-center">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+                <h1 class="animated-item text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[var(--text-primary)]" style="animation-delay: 100ms;">
+                    Systems Analysis & Design
+                </h1>
+                <p class="animated-item mt-6 text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto" style="animation-delay: 250ms;">
+                    Welcome! This site provides concise, easy-to-understand summaries for key chapters on Systems Analysis and Design. Dive into the core concepts and classifications.
+                </p>
+                <div class="animated-item mt-10 flex flex-col sm:flex-row justify-center gap-4" style="animation-delay: 400ms;">
+                    <a href="#/chapter-1" class="nav-link-button inline-block px-8 py-3 rounded-lg text-base font-medium text-white bg-[var(--accent-color)] hover:bg-[var(--accent-hover)] transition-all shadow-md hover:shadow-lg hover:-translate-y-1">
+                        Start with Chapter 1
+                    </a>
+                    <a href="#/ask-question" class="nav-link-button inline-block px-8 py-3 rounded-lg text-base font-medium text-[var(--text-primary)] bg-[var(--bg-secondary)] hover:bg-[var(--border-color)] transition-all dark:hover:bg-gray-700 hover:-translate-y-1">
+                        Ask a Question
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chapter 1 Page (New Layout) -->
+        <section id="page-chapter-1" class="page-content py-20 sm:py-24 bg-[var(--bg-secondary)] hidden">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-center text-[var(--text-primary)]">
+                    Chapter 1: Definition of Systems & SAD
+                </h2>
+                <p class="mt-4 text-lg text-center text-[var(--text-secondary)]">
+                    Understanding the building blocks of systems analysis.
+                </p>
+
+                <!-- Content Box -->
+                <div class="content-box summary-content mt-12 p-6 sm:p-10">
+                    
+                    <!-- Section: What is a System? -->
+                    <h3>What is a System?</h3>
+                    <p>
+                        A system is a <strong>collection of interconnected elements</strong>—such as people, processes, technology, or resources—that work together to achieve a specific purpose or function. These elements interact within a defined boundary and are often influenced by feedback to produce outcomes aligned with the system's goal.
+                    </p>
+                    <blockquote>
+                        In the context of Systems Analysis and Design (SAD), a system most often refers to an <strong>information system</strong>: a set of hardware, software, data, people, and procedures that interact to collect, process, store, and distribute information to support organizational functions.
+                    </blockquote>
+                    
+                    <!-- Section: Key Features (Grid) -->
+                    <h3 class="text-2xl font-semibold mb-6 mt-10">Key Features of Any System</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="feature-card"><strong>Components:</strong> The individual parts (e.g., hardware, employees, rules).</div>
+                        <div class="feature-card"><strong>Interactions:</strong> The relationships and data flow between components.</div>
+                        <div class="feature-card"><strong>Purpose:</strong> The system’s intended objective or goal.</div>
+                        <div class="feature-card"><strong>Boundary:</strong> The line defining what is inside the system versus its external environment.</div>
+                        <div class="feature-card"><strong>Feedback:</strong> Information loops that influence behavior.</div>
+                        <div class="feature-card"><strong>Examples:</strong> Ecosystem, Computer System, Organizational System.</div>
+                    </div>
+                    
+                    <!-- Section: Key Components of SAD (2-Col) -->
+                    <h3 class="text-2xl font-semibold mb-6 mt-10">Key Components of SAD</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="system-card">
+                            <h4>1. Systems Analysis</h4>
+                            <p>Focuses on understanding the problem and defining requirements. Key activities include:</p>
+                            <ul>
+                                <li>Requirement Gathering</li>
+                                <li>Feasibility Analysis</li>
+                                <li>Problem Identification</li>
+                                <li>Modeling (e.g., DFDs, ERDs)</li>
+                            </ul>
+                        </div>
+                        <div class="system-card">
+                            <h4>2. Systems Design</h4>
+                            <p>Focuses on creating a blueprint for the system. Key activities include:</p>
+                            <ul>
+                                <li>Architectural Design</li>
+                                <li>Interface Design (UI/UX)</li>
+                                <li>Data Design</li>
+                                <li>Prototyping</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Section: Core Components (Grid) -->
+                    <h3 class="text-2xl font-semibold mb-6 mt-10">Core Components of a System</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="feature-card"><strong>Inputs:</strong> Resources or data that enter the system (e.g., <code>work hours</code>).</div>
+                        <div class="feature-card"><strong>Processes:</strong> Transformations that manipulate inputs (e.g., <code>calculating wages</code>).</div>
+                        <div class="feature-card"><strong>Outputs:</strong> The results generated by the system (e.g., <code>paychecks</code>).</div>
+                        <div class="feature-card"><strong>Feedback:</strong> Information about outputs used to adjust the system.</div>
+                        <div class="feature-card"><strong>Environment:</strong> External factors outside the system's control (e.g., <code>tax laws</code>).</div>
+                        <div class="feature-card"><strong>Controls:</strong> Mechanisms to ensure correct and secure operation.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chapter 2 Page (New Layout) -->
+        <section id="page-chapter-2" class="page-content py-20 sm:py-24 bg-[var(--bg-primary)] hidden">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-center text-[var(--text-primary)]">
+                    Chapter 2: Types of Systems
+                </h2>
+                <p class="mt-4 text-lg text-center text-[var(--text-secondary)]">
+                    Classifying systems based on their function, nature, and behavior.
+                </p>
+                
+                <!-- Content Box -->
+                <div class="content-box summary-content mt-12 p-6 sm:p-10">
+                    
+                    <!-- Section: Key Info Systems (Main Grid) -->
+                    <h3 class="text-2xl font-semibold mb-6">Key Types of Information Systems</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        
+                        <!-- Card: TPS -->
+                        <div class="system-card">
+                            <h4>Transaction Processing (TPS)</h4>
+                            <ul>
+                                <li><strong>Purpose:</strong> Handles routine, high-volume, day-to-day operational data.</li>
+                                <li><strong>Characteristics:</strong> High reliability, speed, and accuracy.</li>
+                                <li><strong>Examples:</strong> <code>Point of Sale (POS)</code>, <code>Banking System</code>.</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Card: MIS -->
+                        <div class="system-card">
+                            <h4>Management Information (MIS)</h4>
+                            <ul>
+                                <li><strong>Purpose:</strong> Provides managers with summarized reports for routine decision-making.</li>
+                                <li><strong>Characteristics:</strong> Focuses on structured data and predefined reports.</li>
+                                <li><strong>Examples:</strong> <code>Monthly Sales Dashboard</code>, <code>Inventory Reports</code>.</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Card: DSS -->
+                        <div class="system-card">
+                            <h4>Decision Support (DSS)</h4>
+                            <ul>
+                                <li><strong>Purpose:</strong> Assists in solving complex, semi-structured problems using data analysis.</li>
+                                <li><strong>Characteristics:</strong> Interactive, "what-if" analysis, data visualization.</li>
+                                <li><strong>Examples:</strong> <code>Financial Forecasting</code>, <code>Supply Chain Optimization</code>.</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Card: EIS -->
+                        <div class="system-card">
+                            <h4>Executive Information (EIS)</h4>
+                            <ul>
+                                <li><strong>Purpose:</strong> Delivers high-level KPIs and external data for senior executives' strategic planning.</li>
+                                <li><strong>Characteristics:</strong> User-friendly, high-level summaries.</li>
+                                <li><strong>Examples:</strong> <code>BI Dashboard (Market Trends)</code>.</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Card: Expert Systems -->
+                        <div class="system-card">
+                            <h4>Expert Systems</h4>
+                            <ul>
+                                <li><strong>Purpose:</strong> Emulates the decision-making ability of a human expert using AI.</li>
+                                <li><strong>Characteristics:</strong> Uses a knowledge base and inference rules.</li>
+                                <li><strong>Examples:</strong> <code>Medical Diagnosis System</code>.</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Card: ERP -->
+                        <div class="system-card">
+                            <h4>Enterprise Resource (ERP)</h4>
+                            <ul>
+                                <li><strong>Purpose:</strong> Integrates and manages all core business processes (finance, HR, etc.).</li>
+                                <li><strong>Characteristics:</strong> Cross-functional, scalable, unified data.</li>
+                                <li><strong>Examples:</strong> <code>SAP</code>, <code>Oracle ERP</code>.</li>
+                            </ul>
+                        </div>
+
+                    </div> <!-- End Grid -->
+
+                    <!-- Section: Other Classifications -->
+                    <h3 class="text-2xl font-semibold mb-6 mt-12">Other Classifications of Systems</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Card: Open vs Closed -->
+                        <div class="system-card">
+                            <h4>Open vs. Closed Systems</h4>
+                            <table>
+                                <thead><tr><th>Type</th><th>Interaction</th><th>Example</th></tr></thead>
+                                <tbody>
+                                    <tr><td><strong>Open</strong></td><td>Interacts with environment</td><td><code>E-commerce Site</code></td></tr>
+                                    <tr><td><strong>Closed</strong></td><td>Isolated from environment</td><td><code>Sealed Reactor</code></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Card: Abstract vs Physical -->
+                        <div class="system-card">
+                            <h4>Abstract vs. Physical Systems</h4>
+                             <table>
+                                <thead><tr><th>Type</th><th>Nature</th><th>Example</th></tr></thead>
+                                <tbody>
+                                    <tr><td><strong>Abstract</strong></td><td>Conceptual, non-tangible</td><td><code>Flowchart</code>, <code>Math Equation</code></td></tr>
+                                    <tr><td><strong>Physical</strong></td><td>Tangible, material-based</td><td><code>Car Engine</code>, <code>Hardware</code></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Card: Deterministic vs Prob. -->
+                        <div class="system-card">
+                            <h4>Deterministic vs. Probabilistic</h4>
+                             <table>
+                                <thead><tr><th>Type</th><th>Behavior</th><th>Example</th></tr></thead>
+                                <tbody>
+                                    <tr><td><strong>Deterministic</strong></td><td>Entirely predictable</td><td><code>Clock</code>, <code>(2+2)</code></td></tr>
+                                    <tr><td><strong>Probabilistic</strong></td><td>Incorporates randomness</td><td><code>Rolling a die</code>, <code>Weather</code></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Card: Simple vs Complex -->
+                        <div class="system-card">
+                            <h4>Simple vs. Complex Systems</h4>
+                             <table>
+                                <thead><tr><th>Type</th><th>Components</th><th>Example</th></tr></thead>
+                                <tbody>
+                                    <tr><td><strong>Simple</strong></td><td>Few, direct interactions</td><td><code>Calculator</code>, <code>Thermostat</code></td></tr>
+                                    <tr><td><strong>Complex</strong></td><td>Many, interdependent</td><td><code>Airline System</code></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                    </div> <!-- End Grid -->
+                    
+                </div>
+            </div>
+        </section>
+
+        <!-- Ask a Question Page -->
+        <section id="page-ask-question" class="page-content py-20 sm:py-24 bg-[var(--bg-secondary)] hidden">
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-center text-[var(--text-primary)]">
+                    Ask a Question
+                </h2>
+                <p class="mt-4 text-lg text-center text-[var(--text-secondary)]">
+                    Have a query about the content or need clarification? Fill out the form below.
+                </p>
+
+                <!-- Contact Form -->
+                <form id="contact-form" action="https://formspree.io/f/mldaopok" method="POST" class="mt-12 max-w-lg mx-auto grid grid-cols-1 gap-y-6">
+                    <!-- Name Field -->
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-[var(--text-primary)]">Full Name</label>
+                        <div class="mt-1">
+                            <input type="text" id="name" name="name" required
+                                   class="form-input"
+                                   placeholder="Your Name">
+                        </div>
+                    </div>
+
+                    <!-- Email Field -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-[var(--text-primary)]">Email Address</label>
+                        <div class="mt-1">
+                            <input type="email" id="email" name="email" required
+                                   class="form-input"
+                                   placeholder="you@example.com">
+                        </div>
+                    </div>
+
+                    <!-- Message Field -->
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-[var(--text-primary)]">Your Question</label>
+                        <div class="mt-1">
+                            <textarea id="message" name="message" rows="4" required
+                                      class="form-input"
+                                      placeholder="Enter your question here..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div>
+                        <button type="submit"
+                                class="w-full flex justify-center py-3 px-4 rounded-lg border border-transparent shadow-sm text-base font-medium text-white bg-[var(--accent-color)] hover:bg-[var(--accent-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--accent-color)] transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                            Send Message
+                        </button>
+                    </div>
+
+                    <!-- Form Status Messages -->
+                    <div id="form-success" class="hidden p-4 rounded-md bg-green-50 dark:bg-green-900/50 text-green-700 dark:text-green-300">
+                        Thanks! Your message has been sent successfully.
+                    </div>
+                    <div id="form-error" class="hidden p-4 rounded-md bg-red-50 dark:bg-red-900/50 text-red-700 dark:text-red-300">
+                        Oops! Something went wrong. Please try again.
+                    </div>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-[var(--border-color)] transition-colors bg-[var(--bg-primary)]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <p class="text-center text-sm text-[var(--text-secondary)]">
+                &copy; 2025 Systems Analysis Summaries. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Theme Toggling ---
+            const themeToggleBtns = document.querySelectorAll('#theme-toggle, #theme-toggle-mobile');
+            const sunIcons = document.querySelectorAll('#theme-icon-sun, #theme-icon-sun-mobile');
+            const moonIcons = document.querySelectorAll('#theme-icon-moon, #theme-icon-moon-mobile');
+            const htmlEl = document.documentElement;
+
+            function setTheme(theme) {
+                if (theme === 'dark') {
+                    htmlEl.classList.add('dark');
+                    localStorage.theme = 'dark';
+                    sunIcons.forEach(icon => icon.classList.add('hidden'));
+                    moonIcons.forEach(icon => icon.classList.remove('hidden'));
+                } else {
+                    htmlEl.classList.remove('dark');
+                    localStorage.theme = 'light';
+                    sunIcons.forEach(icon => icon.classList.remove('hidden'));
+                    moonIcons.forEach(icon => icon.classList.add('hidden'));
+                }
+            }
+
+            const savedTheme = localStorage.theme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            setTheme(savedTheme);
+
+            themeToggleBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const currentTheme = htmlEl.classList.contains('dark') ? 'light' : 'dark';
+                    setTheme(currentTheme);
+                });
+            });
+
+
+            // --- Mobile Menu Toggling ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // --- Page Navigation Logic ---
+            const pageContents = document.querySelectorAll('.page-content');
+            const allNavLinks = document.querySelectorAll('.nav-link, .nav-link-button');
+            const navLinksForActiveState = document.querySelectorAll('.nav-link');
+
+            function showPage(pageHash) {
+                // Default to home if hash is invalid or empty
+                if (!pageHash || pageHash === '#/' || pageHash.length < 3) {
+                    pageHash = '#/home';
+                }
+                
+                const targetPageId = 'page-' + pageHash.substring(2); // e.g., #/home -> page-home
+                
+                // Hide all pages
+                pageContents.forEach(page => {
+                    page.classList.add('hidden');
+                    page.classList.remove('page-fade-in');
+                });
+
+                // Show the target page
+                const targetPage = document.getElementById(targetPageId);
+                if (targetPage) {
+                    targetPage.classList.remove('hidden');
+                    // Force reflow before adding animation class
+                    void targetPage.offsetWidth; 
+                    targetPage.classList.add('page-fade-in');
+                    
+                    // Specific animations for home page
+                    if (targetPageId === 'page-home') {
+                        document.querySelectorAll('#page-home .animated-item').forEach(item => {
+                            item.classList.add('animate-slide-in-up');
+                        });
+                    }
+                } else {
+                    // Fallback: show home page if target doesn't exist
+                    document.getElementById('page-home').classList.remove('hidden');
+                    document.getElementById('page-home').classList.add('page-fade-in');
+                }
+                
+                // Update active link state
+                navLinksForActiveState.forEach(link => {
+                    if (link.getAttribute('href') === pageHash) {
+                        link.classList.add('active-link');
+                    } else {
+                        link.classList.remove('active-link');
+                    }
+                });
+                
+                // Close mobile menu
+                if (mobileMenu) {
+                    mobileMenu.classList.add('hidden');
+                }
+                
+                // Scroll to top of page
+                window.scrollTo(0, 0);
+            }
+
+            // Add click listeners to all nav links
+            allNavLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const hash = new URL(link.href).hash;
+                    if (hash) {
+                        window.location.hash = hash; // This triggers the 'hashchange' event
+                    }
+                });
+            });
+            
+            // Listen for hash changes (for browser back/forward buttons)
+            window.addEventListener('hashchange', () => {
+                showPage(window.location.hash);
+            });
+
+            // Show initial page on load
+            showPage(window.location.hash);
+
+
+            // --- Formspree AJAX Submission ---
+            const contactForm = document.getElementById('contact-form');
+            const formSuccess = document.getElementById('form-success');
+            const formError = document.getElementById('form-error');
+
+            if (contactForm) {
+                contactForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    
+                    const form = e.target;
+                    const data = new FormData(form);
+                    const action = form.action;
+                    
+                    formSuccess.classList.add('hidden');
+                    formError.classList.add('hidden');
+                    formError.textContent = 'Oops! Something went wrong. Please try again.';
+
+                    fetch(action, {
+                        method: 'POST',
+                        body: data,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    }).then(response => {
+                        if (response.ok) {
+                            formSuccess.classList.remove('hidden');
+                            form.reset();
+                        } else {
+                            response.json().then(data => {
+                                if (Object.hasOwn(data, 'errors')) {
+                                    formError.textContent = data["errors"].map(error => error["message"]).join(", ");
+                                } else {
+                                     formError.textContent = 'Oops! There was a problem submitting your form.';
+                                }
+                                formError.classList.remove('hidden');
+                            })
+                        }
+                    }).catch(error => {
+                        formError.textContent = 'Oops! A network error occurred. Please try again.';
+                        formError.classList.remove('hidden');
+                    });
+                });
+            }
+
+        });
+    </script>
+
+</body>
+</html>
